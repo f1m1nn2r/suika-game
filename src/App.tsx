@@ -1,17 +1,37 @@
+import { useEffect, useRef } from "react";
 import "./App.css";
 
 function App() {
-  const canvas = document.getElementById("canvas");
-  const ctx = canvas.getContext("2d");
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+
+    canvas.width = 700;
+    canvas.height = 700;
+
+    console.log(canvas.getBoundingClientRect());
+
+    const ctx = canvas.getContext("2d");
+    if (!ctx) return;
+
+    // 바닥
+    ctx.fillStyle = "#228b22";
+    ctx.fillRect(0, canvas.height - 20, canvas.width, 20);
+
+    // 양쪽 벽
+    ctx.fillStyle = "#A52A2A";
+    ctx.fillRect(0, 0, 20, canvas.height);
+
+    ctx.fillStyle = "#A52A2A";
+    ctx.fillRect(canvas.width - 20, 0, 20, canvas.height);
+  }, []);
 
   return (
     <main className="main">
       <section>
-        <canvas className="suika-canvas" id="canvas">
-          <div className="wall left-wall"></div>
-          <div className="wall right-wall"></div>
-          <div className="ground"></div>
-        </canvas>
+        <canvas ref={canvasRef} className="suika-canvas" id="canvas"></canvas>
       </section>
     </main>
   );
