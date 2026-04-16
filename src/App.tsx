@@ -3,6 +3,7 @@ import "./App.css";
 import { useEffect, useRef } from "react";
 import { createMap } from "./physics/create-map";
 import { initMatter } from "./physics/init-matter";
+import { spawnFruit } from "./game/spawn-fruit";
 
 function App() {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -18,6 +19,15 @@ function App() {
     const { engine, render } = initMatter({
       canvas,
       container: containerRef.current,
+    });
+
+    canvas.addEventListener("mousedown", (e) => {
+      const rect = canvas.getBoundingClientRect();
+
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+
+      spawnFruit({ engine, x, y });
     });
 
     createMap({
